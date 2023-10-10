@@ -75,8 +75,12 @@ public class AssociativeArray<K, V> {
     String str = "{";
 
     for (int i = 0; i < this.size; i++) {
-      str = str += this.pairs[i].toString();
+      str += this.pairs[i].toString();
+      if (i < this.size - 1) {
+        str += ",";
+      }
     }
+    str += "}";
     return str; 
   } // toString()
 
@@ -89,20 +93,16 @@ public class AssociativeArray<K, V> {
    * get(key) will return value.
    */
   public void set(K key, V value) {
-    
-    for (int i = 0; i < this.size; i++) {
-      if (this.pairs[i].key == key) {
-        this.pairs[i].value = value;
-      }
-    }
+    int index = find(key);
+
+    return pairs[index].value;
   } // set(K,V)
 
   /**
    * Get the value associated with key.
    *
-   * @throws KeyNotFoundException
-   *                              when the key does not appear in the associative
-   *                              array.
+   * @throws KeyNotFoundException when the key does not appear in the 
+   * associative array.
    */
   public V get(K key) throws KeyNotFoundException {
     for (int i = 0; i < this.size; i++) {
@@ -131,7 +131,11 @@ public class AssociativeArray<K, V> {
    * in the associative array, does nothing.
    */
   public void remove(K key) {
-    // STUB
+    int index = find(key);
+    for (i = index; i < this.size; i++) {
+      this.pairs[i] = pairs[i+1]; 
+    }
+    size--;
   } // remove(K)
 
   /**
@@ -157,7 +161,12 @@ public class AssociativeArray<K, V> {
    * If no such entry is found, throws an exception.
    */
   public int find(K key) throws KeyNotFoundException {
-    throw new KeyNotFoundException();   // STUB
+    for (int i = 0; i < size; i++) {
+      if (pairs[i].key.equals(key)) {
+        return i;
+      }
+    }
+    throw new KeyNotFoundException();   
   } // find(K)
 
 } // class AssociativeArray
