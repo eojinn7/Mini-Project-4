@@ -93,9 +93,12 @@ public class AssociativeArray<K, V> {
    * get(key) will return value.
    */
   public void set(K key, V value) {
-    int index = find(key);
+    for (int i = 0; i < this.size; i++) {
+      if (this.pairs[i].key == key) {
+        this.pairs[i].value = value;
+      }
+    }
 
-    return pairs[index].value;
   } // set(K,V)
 
   /**
@@ -112,6 +115,32 @@ public class AssociativeArray<K, V> {
     }
     throw new KeyNotFoundException();
   } // get(K)
+
+  /*
+   * Get the array of KVPairs, as strings (for AACCategories)
+   */
+  public KVPair<String, String>[] getPairs() {
+    @SuppressWarnings("unchecked")
+    KVPair<String, String>[] stringPairs = new KVPair[pairs.length];
+    
+    for (int i = 0; i < pairs.length; i++) {
+      stringPairs[i] = (KVPair<String, String>) pairs[i];
+    }
+    return stringPairs;
+  } // getPairs()
+
+  /*
+   * Return list of keys of associative arrray
+   */
+  public K[] keys() {
+    K[] keyArr = (K[]) new Object[this.size];
+
+    for (int i = 0; i < this.size; i++) {
+      keyArr[i] = this.pairs[i].key;
+    }
+    return keyArr;
+
+  } // keys()
 
   /**
    * Determine if key appears in the associative array.
@@ -131,11 +160,13 @@ public class AssociativeArray<K, V> {
    * in the associative array, does nothing.
    */
   public void remove(K key) {
-    int index = find(key);
-    for (i = index; i < this.size; i++) {
-      this.pairs[i] = pairs[i+1]; 
+    for (int i = 0; i < this.size; i++) {
+      if (pairs[i].key.equals(key)) {
+        this.pairs[i] = null;
+      }
     }
-    size--;
+
+    
   } // remove(K)
 
   /**
